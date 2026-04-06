@@ -18,16 +18,14 @@ public class Cancion extends Multimedia {
         try {
             AudioFile f = AudioFileIO.read(archivo);
             Tag tag = f.getTag();
-            
+
             setTitulo(tag.getFirst(FieldKey.TITLE));
             setArtista(tag.getFirst(FieldKey.ARTIST));
             setAlbum(tag.getFirst(FieldKey.ALBUM));
             setGenero(tag.getFirst(FieldKey.GENRE));
             setDuracionSegundos(f.getAudioHeader().getTrackLength());
 
-        } 
-        
-        catch (Exception e) {
+        } catch (Exception e) {
             setTitulo("Desconocido");
             setArtista("Desconocido");
             setAlbum("Desconocido");
@@ -42,7 +40,8 @@ public class Cancion extends Multimedia {
         System.out.println(" ARTISTA  : " + (getArtista().isEmpty() ? "Desconocido" : getArtista()));
         System.out.println(" ALBUM    : " + (getAlbum().isEmpty() ? "Desconocido" : getAlbum()));
         System.out.println(" GENERO   : " + (getGenero().isEmpty() ? "Desconocido" : getGenero()));
-        System.out.println(" DURACION : " + (getDuracionSegundos() <= 0 ? "Indeterminado" : ("Min: " + getDuracionSegundos() / 60 + " Seg: " + getDuracionSegundos() % 60)));
+        System.out.println(" DURACION : " + (getDuracionSegundos() <= 0 ? "Indeterminado"
+                : ("Min: " + getDuracionSegundos() / 60 + " Seg: " + getDuracionSegundos() % 60)));
         System.out.println("======================================");
     }
 }
