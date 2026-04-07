@@ -4,35 +4,42 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.musiccli</groupId>
-    <artifactId>musiccli</artifactId>
+    <groupId>com.musiccl1v2</groupId>
+    <artifactId>musiccliv2</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.release>17</maven.compiler.release>
     </properties>
 
     <repositories>
         <repository>
             <id>jthink-repo</id>
+            <name>JThink Repository</name>
             <url>https://maven.jthink.net/</url>
         </repository>
     </repositories>
 
     <dependencies>
-
-        <dependency>
-            <groupId>org.jaudiotagger</groupId>
-            <artifactId>jaudiotagger</artifactId>
-            <version>2.0.1</version>
-        </dependency>
-
         <dependency>
             <groupId>net.jthink</groupId>
             <artifactId>jaudiotagger</artifactId>
             <version>3.0.1</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>17</release>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
