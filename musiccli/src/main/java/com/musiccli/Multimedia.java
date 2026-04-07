@@ -2,22 +2,35 @@ package com.musiccli;
 
 public class Multimedia {
 
-    private static int counter = 1;
+    // contador de posicion
+    private static int counter = 0;
 
-    private String titulo;
-    private String artista;
-    private String album;
-    private String genero;
-    private int duracionSegundos;
+    // variables
+    private String titulo = TITULO_DEFECTO;
+    private String artista = ARTISTA_DEFECTO;
+    private String album = ALBUN_DEFECTO;
+    private String genero = GENERO_DEFECTO;
+    private int duracionSegundos = DURACION_DEFECTO;
     public int posicion;
-    
+
+    // variables por defecto
+    private static final String TITULO_DEFECTO = "Desconocido";
+    private static final String ARTISTA_DEFECTO = "Desconocido";
+    private static final String ALBUN_DEFECTO = "Desconocido";
+    private static final String GENERO_DEFECTO = "Desconocido";
+    private static final int DURACION_DEFECTO = 0;
+
     public Multimedia(String titulo, String artista, String album, String genero, int duracionSegundos) {
         this.titulo = titulo;
         this.artista = artista;
         this.album = album;
         this.genero = genero;
         this.duracionSegundos = duracionSegundos;
-        this.posicion = counter++;
+        this.posicion = counter++; // esto funciona como un id
+    }
+
+    public Multimedia() {
+        // Contructor con valores por defecto
     }
 
     public String getTitulo() {
