@@ -1,8 +1,11 @@
 package com.musiccl1v2;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javazoom.jl.player.advanced.AdvancedPlayer;
 
 public class MusicLibrary {
     private static final String FOLDER_NAME = "canciones";
@@ -39,5 +42,27 @@ public class MusicLibrary {
             }
         }
         return null;
+    }
+
+    // understand later
+    private AdvancedPlayer player;
+    private Thread playerThread;
+
+    public void playSong(String path) {
+        playerThread = new Thread(() -> {
+            try (FileInputStream fis = new FileInputStream(path)) {
+                player = new AdvancedPlayer(fis);
+                player.play();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        playerThread.start();
+    }
+
+    public void stopSong() {
+        if (player != null) {
+            player.close();
+        }
     }
 }

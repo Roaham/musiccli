@@ -20,6 +20,7 @@ public class Song extends Multimedia {
             Tag tag = audioFile.getTag();
 
             if (tag != null) {
+                setPath(file.getAbsolutePath());
                 setTitle(tag.getFirst(FieldKey.TITLE));
                 setArtist(tag.getFirst(FieldKey.ARTIST));
                 setAlbum(tag.getFirst(FieldKey.ALBUM));

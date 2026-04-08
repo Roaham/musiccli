@@ -6,7 +6,7 @@ public class CLIcontroller {
     private final MusicLibrary library;
 
     public enum comands {
-        commands, showsongs, watchmetadata, reproducircancion, exit
+        commands, showsongs, watchmetadata, playsong, s, exit
     }
 
     public CLIcontroller(MusicLibrary library) {
@@ -47,6 +47,28 @@ public class CLIcontroller {
                 } catch (NumberFormatException e) {
                     System.err.println("Error: Please enter a valid position.");
                 }
+            }
+            case playsong -> {
+                System.out.print("Input the song position > ");
+                try {
+                    int pos = Integer.parseInt(sc.nextLine());
+                    Song foundSong = library.findByPosition(pos);
+
+                    if (foundSong != null) {
+                        library.stopSong();
+
+                        library.playSong(foundSong.getPath());
+                        System.out.println("Playing: " + foundSong.getTitle());
+                        System.out.println("Input> [s|exit]");
+                    } else {
+                        System.err.println("Error: Position not found.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.err.println("Error: Invalid number.");
+                }
+            }
+            case s -> {
+                library.stopSong();
             }
             case exit -> System.out.println("Quitting...");
             default -> System.out.println("No command like this");

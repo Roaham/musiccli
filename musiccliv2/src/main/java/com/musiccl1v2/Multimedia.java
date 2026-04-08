@@ -5,6 +5,7 @@ public abstract class Multimedia {
     private static int counter = 0;
 
     // attributes
+    private String path = DEFAULT_PATH;
     private String title = DEFAULT_TITLE;
     private String artist = DEFAULT_ARTIST;
     private String album = DEFAULT_ALBUM;
@@ -13,6 +14,7 @@ public abstract class Multimedia {
     private final int position;
 
     // default attributes
+    private static final String DEFAULT_PATH = "Unknown";
     private static final String DEFAULT_TITLE = "Unknown";
     private static final String DEFAULT_ARTIST = "Unknown";
     private static final String DEFAULT_ALBUM = "Unknown";
@@ -24,8 +26,9 @@ public abstract class Multimedia {
         this.position = counter++;
     }
 
-    public Multimedia(String title, String artist, String album, String genre, int durationSeconds) {
-        this(); // the position attribute functions as an id
+    public Multimedia(String path, String title, String artist, String album, String genre, int durationSeconds) {
+        this.position = counter++; // the position attribute functions as an id
+        this.path = path;
         this.title = title;
         this.artist = artist;
         this.album = album;
@@ -34,6 +37,14 @@ public abstract class Multimedia {
     }
 
     // getters and setters
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     public String getTitle() {
         return title;
     }
