@@ -42,9 +42,8 @@ public class Song extends Multimedia {
         if (seconds <= 0) {
             formattedTime = "Unknown";
         } else {
-            int minutes = seconds / 60;
-            int remainingSeconds = seconds % 60;
-            formattedTime = String.format("%d:%02d", minutes, remainingSeconds);
+            // Optimización: Usar método auxiliar privado para formatear tiempo
+            formattedTime = formatDuration(seconds);
         }
 
         System.out.println("============== DETAILS ==============");
@@ -55,5 +54,12 @@ public class Song extends Multimedia {
         System.out.println(" DURATION : " + formattedTime);
         System.out.println(" POSITION : " + getPosition());
         System.out.println("=====================================");
+    }
+
+    // Optimización: Método privado para formatear duración y reducir complejidad
+    private String formatDuration(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+        return String.format("%d:%02d", minutes, remainingSeconds);
     }
 }

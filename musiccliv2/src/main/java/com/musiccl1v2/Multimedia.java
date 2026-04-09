@@ -2,7 +2,7 @@ package com.musiccl1v2;
 
 public abstract class Multimedia {
 
-    private static int counter = 0;
+    private static int idCounter = 0;
 
     // attributes
     private String path = DEFAULT_PATH;
@@ -23,11 +23,11 @@ public abstract class Multimedia {
 
     public Multimedia() {
         // default builder
-        this.position = counter++;
+        this.position = idCounter++;
     }
 
     public Multimedia(String path, String title, String artist, String album, String genre, int durationSeconds) {
-        this.position = counter++; // the position attribute functions as an id
+        this.position = idCounter++; // the position attribute functions as an id
         this.path = path;
         this.title = title;
         this.artist = artist;

@@ -11,6 +11,7 @@ public class Main {
         MusicLibrary library = new MusicLibrary();
         library.loadSongs();
 
+        History history = new History();
         CLIcontroller controller = new CLIcontroller(library);
         Scanner sc = new Scanner(System.in);
         boolean exit = false;
@@ -21,12 +22,17 @@ public class Main {
             System.out.print("\nInput > ");
             // clean input
             String input = sc.nextLine().toLowerCase().trim();
-
+            if (input.equals("exit")) {
+                exit = true;
+            }
             try {
                 controller.execCommand(input, sc);
+
             } catch (IllegalArgumentException e) {
                 // double check for some reason
-                System.err.println("Comando no reconocido.");
+                System.err.println("Wth you do to see this???");
+            } finally {
+                history.record(input);
             }
         }
         sc.close();
