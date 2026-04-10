@@ -1,6 +1,10 @@
-package com.musiccl1v2;
+package com.musiccl1v2.ui;
 
 import java.util.Scanner;
+
+import com.musiccl1v2.core.Song;
+import com.musiccl1v2.data.History;
+import com.musiccl1v2.service.MusicLibrary;
 
 public class CLIcontroller {
     private final MusicLibrary library;

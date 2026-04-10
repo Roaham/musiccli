@@ -1,0 +1,114 @@
+@startuml
+package com.musiccl1v2 {
+
+    abstract class Multimedia {
+        - {static} idCounter: int
+        - path: String
+        - title: String
+        - artist: String
+        - album: String
+        - genre: String
+        - durationSeconds: int
+        - position: int
+        + Multimedia()
+        + Multimedia(path, title, artist, album, genre, durationSeconds)
+        + getPath(): String
+        + setPath(path: String)
+        + getTitle(): String
+        + setTitle(title: String)
+        + getArtist(): String
+        + setArtist(artist: String)
+        + getAlbum(): String
+        + setAlbum(album: String)
+        + getGenre(): String
+        + setGenre(genre: String)
+        + getDurationSeconds(): int
+        + setDurationSeconds(durationSeconds: int)
+        + getPosition(): int
+    }
+
+    class Song {
+        + Song(file: File)
+        - extractMetadata(file: File): void
+        + displaySongInfo(): void
+        - formatDuration(seconds: int): String
+    }
+
+    class MusicLibrary {
+        - {static} FOLDER_NAME: String
+        - {static} MP3_EXTENSION: String
+        - songs: List<Song>
+        - songIndexByPosition: Map<Integer, Song>
+        - musicPlayer: MusicPlayer
+        + MusicLibrary()
+        + loadSongs(): void
+        + getList(): List<Song>
+        + findByPosition(pos: int): Song
+        + playSong(path: String): void
+        + stopSong(): void
+    }
+
+    class MusicPlayer {
+        - player: AdvancedPlayer
+        - playerThread: Thread
+        - isPlaying: boolean
+        + playSong(path: String): void
+        + stopSong(): void
+    }
+
+    class CLIcontroller {
+        - library: MusicLibrary
+        + CLIcontroller(library: MusicLibrary)
+        + execCommand(input: String, sc: Scanner): void
+        - handleCommand(command: comands, sc: Scanner): void
+        - showAvailableCommands(): void
+        - displayAllSongs(): void
+        - handleShowMetadata(sc: Scanner): void
+        - handlePlaySong(sc: Scanner): void
+        - handleShowHistory(): void
+    }
+
+    enum comands {
+        commands
+        showsongs
+        watchmetadata
+        playsong
+        history
+        exit
+    }
+
+    class History {
+        - url: String
+        - user: String
+        - password: String
+        + record(input: String): void
+        + read(): void
+    }
+
+    class DataLoader {
+        - {static} CLEAR_SCREEN_ANSI: String
+        - {static} LOADING_FRAMES: String[]
+        - {static} animationExecutor: ScheduledExecutorService
+        - {static} frameIndex: int
+        + {static} clearConsole(): void
+        + {static} showLoadingAnimation(): void
+        + {static} startAnimation(title: String): void
+    }
+
+    class Main {
+        + {static} main(args: String[]): void
+        - {static} printBanner(): void
+    }
+
+    ' Relationships
+    Multimedia <|-- Song
+    MusicLibrary "1" *-- "many" Song : contains
+    MusicLibrary "1" *-- "1" MusicPlayer : uses
+    CLIcontroller --> MusicLibrary : manages
+    CLIcontroller +-- comands
+    Main --> CLIcontroller : creates
+    Main --> History : uses
+    CLIcontroller ..> DataLoader : calls
+    CLIcontroller ..> History : creates
+}
+@enduml

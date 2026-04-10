@@ -2,6 +2,10 @@ package com.musiccl1v2;
 
 import java.util.Scanner;
 
+import com.musiccl1v2.data.History;
+import com.musiccl1v2.service.MusicLibrary;
+import com.musiccl1v2.ui.CLIcontroller;
+
 public class Main {
     public static void main(String[] args) {
 
@@ -15,7 +19,6 @@ public class Main {
         CLIcontroller controller = new CLIcontroller(library);
         Scanner sc = new Scanner(System.in);
         boolean exit = false;
-
         printBanner();
 
         while (!exit) {

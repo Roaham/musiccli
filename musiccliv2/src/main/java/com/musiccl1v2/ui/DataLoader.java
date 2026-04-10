@@ -1,4 +1,4 @@
-package com.musiccl1v2;
+package com.musiccl1v2.ui;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

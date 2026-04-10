@@ -1,4 +1,4 @@
-package com.musiccl1v2;
+package com.musiccl1v2.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -1,10 +1,12 @@
-package com.musiccl1v2;
+package com.musiccl1v2.service;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.musiccl1v2.core.Song;
 
 public class MusicLibrary {
     private static final String FOLDER_NAME = "canciones";

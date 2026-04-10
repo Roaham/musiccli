@@ -1,4 +1,4 @@
-package com.musiccl1v2;
+package com.musiccl1v2.core;
 
 import java.io.File;
 
