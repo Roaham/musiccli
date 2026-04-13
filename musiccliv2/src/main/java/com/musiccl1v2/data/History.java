@@ -5,8 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 
-public class History {
+public class History implements AutoCloseable {
 
+    // ! The credential are exposed for testing
     // credentials
     private final String url = "jdbc:mysql://localhost:3306/musiccli";
     private final String user = "root";
@@ -46,6 +47,7 @@ public class History {
                 String command = rs.getString("command");
                 java.sql.Timestamp date = rs.getTimestamp("execution_date");
 
+                // ? this sould be in the CLIcontroller
                 // format
                 System.out.println("[Command: " + command + " | Date: " + date + "]");
             }
@@ -53,5 +55,10 @@ public class History {
         } catch (Exception e) {
             System.err.println("Read failed: " + e.getMessage());
         }
+    }
+
+    @Override
+    public void close() {
+        // idk what to do with this
     }
 }

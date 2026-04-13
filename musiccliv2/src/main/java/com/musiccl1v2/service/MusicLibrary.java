@@ -9,8 +9,8 @@ import java.util.Map;
 import com.musiccl1v2.core.Song;
 
 public class MusicLibrary {
-    private static final String FOLDER_NAME = "canciones";
-    private static final String MP3_EXTENSION = ".mp3";
+    private static final String FOLDER_NAME = "canciones"; // ! 'canciones' must exist
+    private static final String MP3_EXTENSION = ".mp3"; // this is in a variable cuzz it is easy to change
     private final List<Song> songs = new ArrayList<>();
     private final Map<Integer, Song> songIndexByPosition = new HashMap<>();
     private final MusicPlayer musicPlayer;
@@ -26,14 +26,17 @@ public class MusicLibrary {
         songIndexByPosition.clear();
         // Create the folder
         File folder = new File(FOLDER_NAME);
+        if (!folder.exists() || !folder.isDirectory()) {
+            return;
+        }
         // Extract the songs from the folder to a file array
-        File[] archivos = folder.listFiles();
+        File[] archives = folder.listFiles();
 
-        if (archivos != null) {
-            for (File archivo : archivos) {
+        if (archives != null) {
+            for (File archive : archives) {
                 // if is mp3 and a file add to songs
-                if (archivo.isFile() && archivo.getName().toLowerCase().endsWith(MP3_EXTENSION)) {
-                    Song song = new Song(archivo);
+                if (archive.isFile() && archive.getName().toLowerCase().endsWith(MP3_EXTENSION)) {
+                    Song song = new Song(archive);
                     songs.add(song);
                     songIndexByPosition.put(song.getPosition(), song);
                 }
@@ -53,9 +56,5 @@ public class MusicLibrary {
 
     public void playSong(String path) {
         musicPlayer.playSong(path);
-    }
-
-    public void stopSong() {
-        musicPlayer.stopSong();
     }
 }

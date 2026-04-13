@@ -7,32 +7,20 @@ import javazoom.jl.player.advanced.AdvancedPlayer;
 public class MusicPlayer {
 
     private AdvancedPlayer player;
-    private Thread playerThread;
-    private volatile boolean isPlaying = false;
 
     public void playSong(String path) {
-        if (isPlaying) {
-            stopSong();
+        // create player nd play the song
+        try (FileInputStream fis = new FileInputStream(path)) {
+            player = new AdvancedPlayer(fis);
+            player.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            player.close();
         }
-        isPlaying = true;
-
-        playerThread = new Thread(() -> {
-            try (FileInputStream fis = new FileInputStream(path)) {
-                player = new AdvancedPlayer(fis);
-                player.play();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                isPlaying = false;
-            }
-        });
-        playerThread.start();
     }
 
     public void stopSong() {
-        if (player != null) {
-            player.close();
-            isPlaying = false;
-        }
+        // TODO stop the song
     }
 }

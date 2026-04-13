@@ -8,6 +8,7 @@ public class DataLoader {
 
     private static final String CLEAR_SCREEN_ANSI = "\033[H\033[2J";
     private static final String[] LOADING_FRAMES = { "|", "/", "-", "\\" };
+    private static final String[] LOADING_FRAMES2 = { "  ◓  ", "  ◑  ", "  ◒  ", "  ◐  " };
 
     private static ScheduledExecutorService animationExecutor;
     private static volatile int frameIndex = 0;
@@ -26,7 +27,6 @@ public class DataLoader {
         long endTime = System.currentTimeMillis() + (durationSeconds * 1000L);
         int currentFrameIndex = 0;
 
-        // while
         while (System.currentTimeMillis() < endTime) {
 
             System.out.print(
@@ -52,13 +52,12 @@ public class DataLoader {
             thread.setDaemon(true);
             return thread;
         });
-        String[] frames = { "  ◓  ", "  ◑  ", "  ◒  ", "  ◐  " };
 
         // Hide cursor
         System.out.print("\033[?25l");
 
         animationExecutor.scheduleAtFixedRate(() -> {
-            System.out.print("\r\033[K" + "Playing: " + title + " [ " + frames[frameIndex % 4] + " ] ");
+            System.out.print("\r\033[K" + "Playing: " + title + " [ " + LOADING_FRAMES2[frameIndex % 4] + " ] ");
             frameIndex++;
         }, 0, 150, TimeUnit.MILLISECONDS);
     }

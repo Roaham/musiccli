@@ -10,10 +10,12 @@ import org.jaudiotagger.tag.Tag;
 public class Song extends Multimedia {
 
     public Song(File file) {
-        super();
+        super(); // multimedia classes
+        // ! this must be change, or could create cursed empty songs
         extractMetadata(file);
     }
 
+    // extract metadata from the file and assign to the class with set
     private void extractMetadata(File file) {
         try {
             AudioFile audioFile = AudioFileIO.read(file);
@@ -31,7 +33,7 @@ public class Song extends Multimedia {
             setDurationSeconds(trackLength);
 
         } catch (Exception e) {
-            System.err.println("Technical Error: Failed to process audio metadata. " + e.getMessage());
+            System.err.println("Error: Failed to process audio metadata. " + e.getMessage());
         }
     }
 
@@ -42,7 +44,6 @@ public class Song extends Multimedia {
         if (seconds <= 0) {
             formattedTime = "Unknown";
         } else {
-            // Optimización: Usar método auxiliar privado para formatear tiempo
             formattedTime = formatDuration(seconds);
         }
 
@@ -56,7 +57,7 @@ public class Song extends Multimedia {
         System.out.println("=====================================");
     }
 
-    // Optimización: Método privado para formatear duración y reducir complejidad
+    // format duration for the musisong btw
     private String formatDuration(int seconds) {
         int minutes = seconds / 60;
         int remainingSeconds = seconds % 60;

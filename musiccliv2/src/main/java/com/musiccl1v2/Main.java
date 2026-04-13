@@ -8,37 +8,40 @@ import com.musiccl1v2.ui.CLIcontroller;
 
 public class Main {
     public static void main(String[] args) {
+        try (History history = new History(); Scanner sc = new Scanner(System.in)) {
+            // no logs by the jaudio
+            java.util.logging.Logger.getLogger("org.jaudiotagger").setLevel(java.util.logging.Level.OFF);
 
-        // no logs by the jaudio
-        java.util.logging.Logger.getLogger("org.jaudiotagger").setLevel(java.util.logging.Level.OFF);
+            // load songs
+            MusicLibrary library = new MusicLibrary();
+            library.loadSongs();
 
-        MusicLibrary library = new MusicLibrary();
-        library.loadSongs();
+            // cli print class
+            CLIcontroller controller = new CLIcontroller(library, history);
+            boolean exit = false;
+            printBanner();
 
-        History history = new History();
-        CLIcontroller controller = new CLIcontroller(library);
-        Scanner sc = new Scanner(System.in);
-        boolean exit = false;
-        printBanner();
+            while (!exit) {
+                System.out.print("\nInput > ");
 
-        while (!exit) {
-            System.out.print("\nInput > ");
-            // clean input
-            String input = sc.nextLine().toLowerCase().trim();
-            if (input.equals("exit")) {
-                exit = true;
+                // normalize input
+                String input = sc.nextLine();
+
+                if (input.equals("exit")) {
+                    exit = true;
+                }
+
+                try {
+                    controller.executeCommand(input, sc);
+                } catch (Exception e) {
+                    System.err.println("Command execution error: " + e.getMessage()); // double check btw
+                } finally {
+                    history.record(input); // save history to db
+                }
             }
-            try {
-                controller.execCommand(input, sc);
-
-            } catch (IllegalArgumentException e) {
-                // double check for some reason
-                System.err.println("Wth you do to see this???");
-            } finally {
-                history.record(input);
-            }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
         }
-        sc.close();
     }
 
     private static void printBanner() {
