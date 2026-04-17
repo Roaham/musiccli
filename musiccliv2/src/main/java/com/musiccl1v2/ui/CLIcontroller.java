@@ -44,38 +44,55 @@ public class CLIcontroller {
         }
     }
 
+    /**
+     * Displays a list of all available commands to the user.
+     * The list is cleared and the user is presented with a formatted list of
+     * commands.
+     */
     private void showAvailableCommands() {
-        DataLoader.clearConsole();
+        Animations.clearConsole();
         System.out.println("\n--- COMMAND LIST ---");
         for (Command c : Command.values()) {
             System.out.println(" > " + c.name().toLowerCase());
         }
     }
 
+    /**
+     * Displays all the songs in the library, along with their positions.
+     * If the library is empty, prints "Empty Library".
+     */
     private void displayAllSongs() {
-        DataLoader.showLoadingAnimation();
-        if (library.getList().isEmpty()) {
-            System.out.println("Empty Library");
-        } else {
-            library.getList()
-                    .forEach(song -> System.out.printf(" [%02d] > %s %n", song.getPosition(), song.getTitle()));
-        }
+        Animations.showLoadingAnimation();
+        ConsoleRenderer.printSongList(library.getList());
     }
 
+    /**
+     * Handle the WATCH_METADATA command. Prompts the user to enter a song position,
+     * and displays the song's metadata.
+     * 
+     * @param scanner the scanner to read the user's input from
+     */
     private void handleShowMetadata(Scanner scanner) {
         Integer pos = readPosition(scanner);
         if (pos == null)
             return;
 
-        DataLoader.showLoadingAnimation();
+        Animations.showLoadingAnimation();
         Song foundSong = library.findByPosition(pos);
         if (foundSong != null) {
-            foundSong.displaySongInfo();
+            ConsoleRenderer.displaySongInfo(foundSong);
         } else {
-            System.err.println("Error: Song with position " + pos + " not found.");
+            ConsoleRenderer.printError("Song with position " + pos + " not found.");
         }
     }
 
+    /**
+     * Handle the PLAY_SONG command. Prompts the user to enter a song position and
+     * plays the song at that position if it exists. If the song does not exist,
+     * prints an error message.
+     *
+     * @param scanner the scanner used to read user input
+     */
     private void handlePlaySong(Scanner scanner) {
         Integer pos = readPosition(scanner);
         if (pos == null)
@@ -84,24 +101,28 @@ public class CLIcontroller {
         Song foundSong = library.findByPosition(pos);
         if (foundSong != null) {
             library.playSong(foundSong.getPath());
-            DataLoader.startAnimation(foundSong.getTitle());
+            Animations.startAnimation(foundSong.getTitle());
         } else {
-            System.err.println("Error: Song with position " + pos + " not found.");
+            ConsoleRenderer.printError("Song with position " + pos + " not found.");
         }
     }
 
+    /**
+     * Displays the history of the application. The history contains the commands
+     * the user has entered, along with the time of execution.
+     */
     private void handleShowHistory() {
-        DataLoader.showLoadingAnimation();
+        Animations.showLoadingAnimation();
         // ? idk if its better to put the history in the builder on in a try-catch here,
         // however it works the same
-        history.read();
+        ConsoleRenderer.printHistory(history);
     }
 
     // position reader for undertand better the code
     private Integer readPosition(Scanner scanner) {
         try {
             System.out.print("Input the song position > ");
-            return Integer.parseInt(scanner.nextLine());
+            return Integer.valueOf(scanner.nextLine());
         } catch (NumberFormatException e) {
             System.err.println("Error: Please enter a valid numerical position.");
             return null;

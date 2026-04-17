@@ -1,9 +1,25 @@
 @startuml
-skinparam classAttributeIconSize 0
-skinparam monochrome true
+' --- Configuración Visual ---
+skinparam theme plain
 skinparam shadowing false
+skinparam roundcorner 8
+skinparam linetype ortho
+skinparam fontname "Segoe UI"
+skinparam class {
+    BackgroundColor White
+    ArrowColor #263238
+    BorderColor #263238
+}
 
-package "com.musiccl1v2.core" {
+' --- Colores por Capa ---
+skinparam package {
+    BackgroundColor<<UI>> #E3F2FD
+    BackgroundColor<<Service>> #F1F8E9
+    BackgroundColor<<Data>> #FFF3E0
+    BackgroundColor<<Core>> #F3E5F5
+}
+
+package "com.musiccl1v2.core" <<Core>> {
     abstract class Multimedia {
         - {static} idCounter : int
         - path : String
@@ -16,19 +32,7 @@ package "com.musiccl1v2.core" {
         --
         + Multimedia()
         + Multimedia(path, title, artist, album, genre, durationSeconds)
-        + getPath() : String
-        + getTitle() : String
-        + getArtist() : String
-        + getAlbum() : String
-        + getGenre() : String
-        + getDurationSeconds() : int
-        + getPosition() : int
-        + setPath(path : String)
-        + setTitle(title : String)
-        + setArtist(artist : String)
-        + setAlbum(album : String)
-        + setGenre(genre : String)
-        + setDurationSeconds(duration : int)
+        + getters/setters()
     }
 
     class Song {
@@ -41,7 +45,7 @@ package "com.musiccl1v2.core" {
     Multimedia <|-- Song
 }
 
-package "com.musiccl1v2.data" {
+package "com.musiccl1v2.data" <<Data>> {
     class History {
         - url : String
         - user : String
@@ -55,7 +59,7 @@ package "com.musiccl1v2.data" {
     AutoCloseable <|.. History
 }
 
-package "com.musiccl1v2.service" {
+package "com.musiccl1v2.service" <<Service>> {
     class MusicLibrary {
         - {static} FOLDER_NAME : String
         - {static} MP3_EXTENSION : String
@@ -80,10 +84,10 @@ package "com.musiccl1v2.service" {
     }
 
     MusicLibrary o-- MusicPlayer
-    MusicLibrary "1" *-- "many" com.musiccl1v2.core.Song
+    MusicLibrary "1" *-- "many" Song
 }
 
-package "com.musiccl1v2.ui" {
+package "com.musiccl1v2.ui" <<UI>> {
     class CLIcontroller {
         + CLIcontroller(library, history)
         + executeCommand(input, scanner) : void
@@ -93,7 +97,6 @@ package "com.musiccl1v2.ui" {
         - handleShowMetadata(scanner) : void
         - handlePlaySong(scanner) : void
         - handleShowHistory() : void
-        - readPosition(scanner) : Integer
     }
 
     enum Command <<enumeration>> {
@@ -106,14 +109,20 @@ package "com.musiccl1v2.ui" {
     }
 
     class DataLoader {
+        - {static} CLEAR_SCREEN_ANSI : String
+        - {static} LOADING_FRAMES : String[]
+        - {static} LOADING_FRAMES2 : String[]
+        - {static} animationExecutor : ScheduledExecutorService
+        - {static} @volatile frameIndex : int
+        --
         + {static} clearConsole() : void
         + {static} showLoadingAnimation() : void
         + {static} startAnimation(title : String) : void
     }
 
     CLIcontroller +-- Command
-    CLIcontroller --> com.musiccl1v2.service.MusicLibrary
-    CLIcontroller --> com.musiccl1v2.data.History
+    CLIcontroller --> MusicLibrary
+    CLIcontroller --> History
     CLIcontroller ..> DataLoader
 }
 
@@ -123,9 +132,9 @@ package "com.musiccl1v2" {
         - {static} printBanner() : void
     }
 
-    Main ..> com.musiccl1v2.ui.CLIcontroller
-    Main ..> com.musiccl1v2.service.MusicLibrary
-    Main ..> com.musiccl1v2.data.History
+    Main ..> CLIcontroller
+    Main ..> MusicLibrary
+    Main ..> History
 }
 
 @enduml

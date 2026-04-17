@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
 
+import com.musiccl1v2.ui.ConsoleRenderer;
+
 public class History implements AutoCloseable {
 
     // ! The credential are exposed for testing
@@ -29,7 +31,7 @@ public class History implements AutoCloseable {
             pstmt.executeUpdate();
 
         } catch (Exception e) {
-            System.err.println("Record failed: " + e.getMessage());
+            ConsoleRenderer.printError(e.getMessage());
         }
     }
 
@@ -53,7 +55,7 @@ public class History implements AutoCloseable {
             }
 
         } catch (Exception e) {
-            System.err.println("Read failed: " + e.getMessage());
+            ConsoleRenderer.printError(e.getMessage());
         }
     }
 

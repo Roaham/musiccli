@@ -1,17 +1,26 @@
 package com.musiccl1v2.core;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
+import org.jaudiotagger.audio.exceptions.CannotReadException;
+import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
+import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
+import org.jaudiotagger.tag.KeyNotFoundException;
 import org.jaudiotagger.tag.Tag;
+import org.jaudiotagger.tag.TagException;
+
+// * Class representing a song
 
 public class Song extends Multimedia {
 
     public Song(File file) {
         super(); // multimedia classes
         // ! this must be change, or could create cursed empty songs
+        this.setPath(file.getAbsolutePath());
         extractMetadata(file);
     }
 
@@ -22,7 +31,6 @@ public class Song extends Multimedia {
             Tag tag = audioFile.getTag();
 
             if (tag != null) {
-                setPath(file.getAbsolutePath());
                 setTitle(tag.getFirst(FieldKey.TITLE));
                 setArtist(tag.getFirst(FieldKey.ARTIST));
                 setAlbum(tag.getFirst(FieldKey.ALBUM));
@@ -32,35 +40,9 @@ public class Song extends Multimedia {
             int trackLength = audioFile.getAudioHeader().getTrackLength();
             setDurationSeconds(trackLength);
 
-        } catch (Exception e) {
+        } catch (IOException | CannotReadException | InvalidAudioFrameException | ReadOnlyFileException
+                | KeyNotFoundException | TagException e) {
             System.err.println("Error: Failed to process audio metadata. " + e.getMessage());
         }
-    }
-
-    public void displaySongInfo() {
-        int seconds = getDurationSeconds();
-        String formattedTime;
-
-        if (seconds <= 0) {
-            formattedTime = "Unknown";
-        } else {
-            formattedTime = formatDuration(seconds);
-        }
-
-        System.out.println("============== DETAILS ==============");
-        System.out.println(" TITLE    : " + getTitle());
-        System.out.println(" ARTIST   : " + getArtist());
-        System.out.println(" ALBUM    : " + getAlbum());
-        System.out.println(" GENRE    : " + getGenre());
-        System.out.println(" DURATION : " + formattedTime);
-        System.out.println(" POSITION : " + getPosition());
-        System.out.println("=====================================");
-    }
-
-    // format duration for the musisong btw
-    private String formatDuration(int seconds) {
-        int minutes = seconds / 60;
-        int remainingSeconds = seconds % 60;
-        return String.format("%d:%02d", minutes, remainingSeconds);
     }
 }

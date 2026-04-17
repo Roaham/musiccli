@@ -1,7 +1,8 @@
-/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/CLIcontroller.java
-/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/DataLoader.java
 /home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/Main.java
-/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/Multimedia.java
-/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/MusicLibrary.java
-/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/MusicPlayer.java
-/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/Song.java
+/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/core/Multimedia.java
+/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/core/Song.java
+/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/data/History.java
+/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/service/MusicLibrary.java
+/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/service/MusicPlayer.java
+/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/ui/CLIcontroller.java
+/home/roa/Documentos/Roaham/musiccli/musiccliv2/src/main/java/com/musiccl1v2/ui/DataLoader.java
