@@ -10,10 +10,10 @@ import com.musiccl1v2.ui.ConsoleRenderer;
 public class Main {
     public static void main(String[] args) {
         try (History history = new History(); Scanner sc = new Scanner(System.in)) {
-            // no logs by the jaudio
+            // no logs by the audio
             java.util.logging.Logger.getLogger("org.jaudiotagger").setLevel(java.util.logging.Level.OFF);
 
-            // load songs
+            // TODO Convert this to a new command
             MusicLibrary library = new MusicLibrary();
             library.loadSongs();
 

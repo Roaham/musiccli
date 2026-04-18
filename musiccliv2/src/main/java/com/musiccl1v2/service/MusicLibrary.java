@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.musiccl1v2.core.Song;
+import com.musiccl1v2.core.exception.LoadSongException;
+import com.musiccl1v2.core.exception.MetadataExtractionException;
 
 public class MusicLibrary {
     private static final String FOLDER_NAME = "canciones"; // ! 'canciones' must exist
-    private static final String MP3_EXTENSION = ".mp3"; // this is in a variable cuzz it is easy to change
+    private static final String MP3_EXTENSION = ".mp3"; // this is in a variable cuzz its ez to change
     private final List<Song> songs = new ArrayList<>();
     private final Map<Integer, Song> songIndexByPosition = new HashMap<>();
     private final MusicPlayer musicPlayer;
@@ -19,7 +21,8 @@ public class MusicLibrary {
         this.musicPlayer = new MusicPlayer();
     }
 
-    public void loadSongs() {
+    // ! Test
+    public void loadSongs() throws MetadataExtractionException{
         // Clear the arraylist
         songs.clear();
         // Clear the hashmap

@@ -1,27 +1,16 @@
 @startuml
-' --- Configuración Visual ---
-skinparam theme plain
-skinparam shadowing false
-skinparam roundcorner 8
-skinparam linetype ortho
-skinparam fontname "Segoe UI"
+
 skinparam class {
     BackgroundColor White
-    ArrowColor #263238
-    BorderColor #263238
+    ArrowColor #2C3E50
+    BorderColor #2C3E50
 }
 
-' --- Colores por Capa ---
-skinparam package {
-    BackgroundColor<<UI>> #E3F2FD
-    BackgroundColor<<Service>> #F1F8E9
-    BackgroundColor<<Data>> #FFF3E0
-    BackgroundColor<<Core>> #F3E5F5
-}
+skinparam packageStyle rectangle
 
-package "com.musiccl1v2.core" <<Core>> {
+package "com.musiccl1v2.core" {
     abstract class Multimedia {
-        - {static} idCounter : int
+        - idCounter : int
         - path : String
         - title : String
         - artist : String
@@ -29,112 +18,89 @@ package "com.musiccl1v2.core" <<Core>> {
         - genre : String
         - durationSeconds : int
         - position : int
-        --
-        + Multimedia()
-        + Multimedia(path, title, artist, album, genre, durationSeconds)
-        + getters/setters()
+        + getPath()
+        + getTitle()
+        + getDurationSeconds()
     }
 
     class Song {
-        + Song(file : File)
-        - extractMetadata(file : File) : void
-        + displaySongInfo() : void
-        - formatDuration(seconds : int) : String
+        + Song(File file)
+        - extractMetadata(File file)
     }
 
     Multimedia <|-- Song
-}
 
-package "com.musiccl1v2.data" <<Data>> {
-    class History {
-        - url : String
-        - user : String
-        - password : String
-        --
-        + record(input : String) : void
-        + read() : void
-        + close() : void
+    ' --- FUTURE IMPLEMENTATION ---
+    class Video << (F, #FFAAAA) Future >> {
+        - resolution : String
+        - codec : String
+        + playVideo()
     }
-    interface AutoCloseable <<interface>>
-    AutoCloseable <|.. History
+    Multimedia <|-- Video #red;line.dotted
 }
 
-package "com.musiccl1v2.service" <<Service>> {
+package "com.musiccl1v2.service" {
     class MusicLibrary {
-        - {static} FOLDER_NAME : String
-        - {static} MP3_EXTENSION : String
         - songs : List<Song>
         - songIndexByPosition : Map<Integer, Song>
-        --
-        + MusicLibrary()
-        + loadSongs() : void
-        + getList() : List<Song>
-        + findByPosition(pos : int) : Song
-        + playSong(path : String) : void
-        + stopSong() : void
+        + loadSongs()
+        + findByPosition(int)
+        + playSong(String)
     }
 
     class MusicPlayer {
         - player : AdvancedPlayer
-        - playerThread : Thread
-        - isPlaying : boolean
-        --
-        + playSong(path : String) : void
-        + stopSong() : void
+        + playSong(String)
+        + stopSong()
     }
 
-    MusicLibrary o-- MusicPlayer
-    MusicLibrary "1" *-- "many" Song
+    ' --- FUTURE IMPLEMENTATION ---
+    class YoutubeDownloader << (F, #FFAAAA) Future >> {
+        - YTDLP_PATH : String
+        + downloadAudio(String url)
+        + downloadVideo(String url)
+    }
+
+    MusicLibrary *-- MusicPlayer
+    MusicLibrary ..> YoutubeDownloader #red;line.dotted : "uses yt-dlp"
 }
 
-package "com.musiccl1v2.ui" <<UI>> {
+package "com.musiccl1v2.data" {
+    class History {
+        - connection : Connection
+        + record(String)
+        + read()
+    }
+
+    ' --- FUTURE IMPLEMENTATION ---
+    class PlaylistRepository << (F, #FFAAAA) Future >> {
+        - connection : Connection
+        + savePlaylist(Playlist)
+        + loadPlaylist(String name)
+    }
+}
+
+package "com.musiccl1v2.ui" {
     class CLIcontroller {
-        + CLIcontroller(library, history)
-        + executeCommand(input, scanner) : void
-        - handleCommand(command, scanner) : void
-        - showAvailableCommands() : void
-        - displayAllSongs() : void
-        - handleShowMetadata(scanner) : void
-        - handlePlaySong(scanner) : void
-        - handleShowHistory() : void
+        - library : MusicLibrary
+        - history : History
+        + executeCommand()
     }
 
-    enum Command <<enumeration>> {
-        COMMANDS
-        SHOW_SONGS
-        WATCH_METADATA
-        PLAY_SONG
-        HISTORY
-        EXIT
+    class ConsoleRenderer <<Utility>> {
+        + printBanner()
+        + printSongList()
+        + displaySongInfo()
     }
-
-    class DataLoader {
-        - {static} CLEAR_SCREEN_ANSI : String
-        - {static} LOADING_FRAMES : String[]
-        - {static} LOADING_FRAMES2 : String[]
-        - {static} animationExecutor : ScheduledExecutorService
-        - {static} @volatile frameIndex : int
-        --
-        + {static} clearConsole() : void
-        + {static} showLoadingAnimation() : void
-        + {static} startAnimation(title : String) : void
-    }
-
-    CLIcontroller +-- Command
-    CLIcontroller --> MusicLibrary
-    CLIcontroller --> History
-    CLIcontroller ..> DataLoader
 }
 
-package "com.musiccl1v2" {
-    class Main {
-        + {static} main(args : String[]) : void
-        - {static} printBanner() : void
-    }
+CLIcontroller --> MusicLibrary
+CLIcontroller --> History
+CLIcontroller ..> ConsoleRenderer
 
-    Main ..> CLIcontroller
-    Main ..> MusicLibrary
-    Main ..> History
-}
+legend right
+  <font color=red>Dotted lines/Red items</font> = Future Implementations
+  (F) = Planned Feature
+endlegend
 
 @enduml

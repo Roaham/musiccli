@@ -21,14 +21,15 @@ public class CLIcontroller {
         this.history = history;
     }
 
-    // Overhere enter the input nd its double checked for no reason at all
     public void executeCommand(String input, Scanner scanner) {
         try {
-            // Normalizing input (again) to match enum constants
             Command command = Command.valueOf(input.toUpperCase().trim());
             handleCommand(command, scanner);
         } catch (IllegalArgumentException e) {
-            System.err.println("No command like this: " + input);
+            ConsoleRenderer.printError("Unknown command: " + input);
+        } catch (Exception e) {
+            // Catch any unexpected errors and display them nicely
+            ConsoleRenderer.printError("An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -40,6 +41,7 @@ public class CLIcontroller {
             case WATCH_METADATA -> handleShowMetadata(scanner);
             case PLAY_SONG -> handlePlaySong(scanner);
             case HISTORY -> handleShowHistory();
+            // ! This is useless but keeps the switch clean
             case EXIT -> System.out.println("Quitting...");
         }
     }
@@ -118,7 +120,7 @@ public class CLIcontroller {
         ConsoleRenderer.printHistory(history);
     }
 
-    // position reader for undertand better the code
+    // position reader for understand better the code
     private Integer readPosition(Scanner scanner) {
         try {
             System.out.print("Input the song position > ");

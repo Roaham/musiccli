@@ -53,6 +53,7 @@ public class Animations {
     /**
      * Asynchronous playback animation.
      * Runs on a background daemon thread to allow the CLI to remain responsive.
+     * Its not finish yet, but it just works
      */
     public static void startAnimation(String title) {
         // Prevent multiple executors from running simultaneously
