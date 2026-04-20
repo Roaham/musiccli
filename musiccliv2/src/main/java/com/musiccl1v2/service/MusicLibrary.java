@@ -21,9 +21,10 @@ public class MusicLibrary {
         this.musicPlayer = new MusicPlayer();
     }
 
-    // ! Test
-    public void loadSongs() throws MetadataExtractionException{
-        // Clear the arraylist
+    // ! Testing
+    // TODO: Handle the exception properly
+    public void loadSongs() {
+        // Clear the List
         songs.clear();
         // Clear the hashmap
         songIndexByPosition.clear();
@@ -35,15 +36,19 @@ public class MusicLibrary {
         // Extract the songs from the folder to a file array
         File[] archives = folder.listFiles();
 
-        if (archives != null) {
-            for (File archive : archives) {
-                // if is mp3 and a file add to songs
-                if (archive.isFile() && archive.getName().toLowerCase().endsWith(MP3_EXTENSION)) {
-                    Song song = new Song(archive);
-                    songs.add(song);
-                    songIndexByPosition.put(song.getPosition(), song);
+        try {
+            if (archives != null) {
+                for (File archive : archives) {
+                    // if is mp3 and a file add to songs
+                    if (archive.isFile() && archive.getName().toLowerCase().endsWith(MP3_EXTENSION)) {
+                        Song song = new Song(archive);
+                        songs.add(song);
+                        songIndexByPosition.put(song.getPosition(), song);
+                    }
                 }
             }
+        } catch (MetadataExtractionException e) {
+            System.err.println("[ERROR] Failed to load song at potential position: " + (songs.size()));
         }
     }
 
